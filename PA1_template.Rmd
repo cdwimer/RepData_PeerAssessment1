@@ -2,11 +2,10 @@
 title: "PA1_template"
 author: "cdwimer"
 date: "12/6/2020"
-output: html_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ### Loading and preprocessing the data
@@ -24,7 +23,7 @@ library(ggplot2)
 ```
 
 ### What is the average total number of steps taken per day?
-```{r average total steps,include=TRUE}
+```{r average total steps, echo=TRUE}
 #calculate total steps taken each day
 dailySteps <- aggregate(steps ~ date, activity, sum)
 #histogram of the total number of steps taken each day
@@ -33,7 +32,7 @@ graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + lab
     theme_bw()
 ```
 
-```{r mean and median steps}
+```{r mean and median steps, echo=TRUE}
 #calculate mean number of steps taken each day
 paste("Mean number of steps:", mean (dailySteps$steps))
 #calculate median number of steps taken each day
@@ -41,7 +40,7 @@ paste("Median number of steps:", median (dailySteps$steps))
 ```
 
 ### What is the average daily activity pattern?
-```{r average daily activity}
+```{r average daily activity, echo=TRUE}
 #plot time series of the average number of steps taken
 timeSteps<- aggregate(steps ~ interval, activity, mean)
 graph <- ggplot(timeSteps, aes(interval, steps))
@@ -49,17 +48,18 @@ graph + geom_line() + labs(title = "Time Series of Average Number of Steps Taken
     theme_bw()
 ```
 
-```{r average 5-min interval}
+```{r average 5-min interval, echo=TRUE}
 #calculate 5-minute interval, on average across all the days in the dataset, containing the maximum number of steps
 paste("interval with max # steps:", timeSteps$interval[which.max(timeSteps$steps)])
 ```
 
 ### Imputing missing values
-```{r missing values}
+```{r missing values, echo=TRUE}
 #calculate total number of missing values in the dataset
 paste("Number of missing values:",sum(is.na(activity$steps)))
 ```    
-```{r missing values histogram}
+
+```{r missing values histogram, echo=TRUE}
 # fill in all of the missing values with mean of the interval
 activityCleaned <- activity
 activityCleaned$steps <- ifelse(is.na(activityCleaned$steps), timeSteps$steps[match(activityCleaned$interval, timeSteps$interval)], activityCleaned$steps)
@@ -70,7 +70,7 @@ graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + lab
     theme_bw()
 ```
 
-```{r new mean and median steps}
+```{r new mean and median steps, echo=TRUE}
 #calculate mean number of steps taken each day using imputed table
 paste("Mean number of steps:", mean (dailyStepsCleaned$steps))
 #calculate median number of steps taken each day using imputed table
@@ -78,7 +78,7 @@ paste("Median number of steps:", median (dailyStepsCleaned$steps))
 ```
 
 ### Are there differences in activity patterns between weekdays and weekends?
-```{r weekdays vs weekends}
+```{r weekdays vs weekends, echo=TRUE}
 #panel plot time series of the average number of steps taken weekdays vs weekends
 activityCleaned$day <- weekdays(as.Date(activityCleaned$date))
 activityCleaned$daytype<- ifelse(activityCleaned$day == c("Sunday", "Saturday"), "weekend", "weekday")

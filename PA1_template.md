@@ -10,7 +10,6 @@
     }
     activity <- read.csv("activity.csv")
     library(ggplot2)
-    echo=TRUE
 
 ### What is the average total number of steps taken per day?
 
@@ -24,14 +23,14 @@
 ![](PA1_template_files/figure-markdown_strict/average%20total%20steps-1.png)
 
     #calculate mean number of steps taken each day
-    mean (dailySteps$steps)
+    paste("Mean number of steps:", mean (dailySteps$steps))
 
-    ## [1] 10766.19
+    ## [1] "Mean number of steps: 10766.1886792453"
 
     #calculate median number of steps taken each day
-    median (dailySteps$steps)
+    paste("Median number of steps:", median (dailySteps$steps))
 
-    ## [1] 10765
+    ## [1] "Median number of steps: 10765"
 
 ### What is the average daily activity pattern?
 
@@ -44,16 +43,16 @@
 ![](PA1_template_files/figure-markdown_strict/average%20daily%20activity-1.png)
 
     #calculate 5-minute interval, on average across all the days in the dataset, containing the maximum number of steps
-    timeSteps$interval[which.max(timeSteps$steps)]
+    paste("interval with max # steps:", timeSteps$interval[which.max(timeSteps$steps)])
 
-    ## [1] 835
+    ## [1] "interval with max # steps: 835"
 
 ### Imputing missing values
 
     #calculate total number of missing values in the dataset
-    sum(is.na(activity$steps))
+    paste("Number of missing values:",sum(is.na(activity$steps)))
 
-    ## [1] 2304
+    ## [1] "Number of missing values: 2304"
 
     # fill in all of the missing values with mean of the interval
     activityCleaned <- activity
@@ -64,17 +63,17 @@
     graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + labs(title = "Histogram of Total Daily Steps", x = "number of steps", y = "Frequency") + 
         theme_bw()
 
-![](PA1_template_files/figure-markdown_strict/missing%20values-1.png)
+![](PA1_template_files/figure-markdown_strict/missing%20values%20histogram-1.png)
 
     #calculate mean number of steps taken each day using imputed table
-    mean (dailyStepsCleaned$steps)
+    paste("Mean number of steps:", mean (dailyStepsCleaned$steps))
 
-    ## [1] 10766.19
+    ## [1] "Mean number of steps: 10766.1886792453"
 
     #calculate median number of steps taken each day using imputed table
-    median (dailyStepsCleaned$steps)
+    paste("Median number of steps:", median (dailyStepsCleaned$steps))
 
-    ## [1] 10766.19
+    ## [1] "Median number of steps: 10766.1886792453"
 
 ### Are there differences in activity patterns between weekdays and weekends?
 
