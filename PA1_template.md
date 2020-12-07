@@ -20,7 +20,7 @@
     graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + labs(title = "Histogram of Total Daily Steps", x = "Steps", y = "Frequency") + 
         theme_bw()
 
-(PA1_template_files/figure-markdown_strict/average%20total%20steps-1.png)
+PA1_template_files/figure-markdown_strict/average%20total%20steps-1.png
 
     #calculate mean number of steps taken each day
     paste("Mean number of steps:", mean (dailySteps$steps))
@@ -40,7 +40,7 @@
     graph + geom_line() + labs(title = "Time Series of Average Number of Steps Taken", x = "5 minute Interval", y = "number of steps") + 
         theme_bw()
 
-(PA1_template_files/figure-markdown_strict/average%20daily%20activity-1.png)
+PA1_template_files/figure-markdown_strict/average%20daily%20activity-1.png
 
     #calculate 5-minute interval, on average across all the days in the dataset, containing the maximum number of steps
     paste("interval with max # steps:", timeSteps$interval[which.max(timeSteps$steps)])
@@ -63,7 +63,7 @@
     graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + labs(title = "Histogram of Total Daily Steps", x = "number of steps", y = "Frequency") + 
         theme_bw()
 
-(PA1_template_files/figure-markdown_strict/missing%20values%20histogram-1.png)
+PA1_template_files/figure-markdown_strict/missing%20values%20histogram-1.png
 
     #calculate mean number of steps taken each day using imputed table
     paste("Mean number of steps:", mean (dailyStepsCleaned$steps))
@@ -85,4 +85,4 @@
     graph + facet_grid(daytype~.) + labs(title = "Time Series of Average Number of Steps Taken", x = "5 minute Interval", y = "number of steps") + 
         theme_bw()
 
-(PA1_template_files/figure-markdown_strict/weekdays%20vs%20weekends-1.png)
+PA1_template_files/figure-markdown_strict/weekdays%20vs%20weekends-1.png
