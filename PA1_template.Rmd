@@ -1,25 +1,78 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "PA1_template"
+author: "cdwimer"
+date: "12/6/2020"
+output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-## Loading and preprocessing the data
+### Loading and preprocessing the data
+```{r read data}
+filename <- "repdata_data_activity.zip"
+if(!file.exists(filename)){
+    fileurl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+    download.file(fileurl, "repdata_data_activity.zip")
+}
+if(!file.exists("activity.csv")) {
+    unzip(filename)
+}
+activity <- read.csv("activity.csv")
+library(ggplot2)
+```
 
+### What is the average total number of steps taken per day?
+```{r average total steps}
+#calculate total steps taken each day
+dailySteps <- aggregate(steps ~ date, activity, sum)
+#histogram of the total number of steps taken each day
+graph <- ggplot(dailySteps, aes(steps))
+graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + labs(title = "Histogram of Total Daily Steps", x = "Steps", y = "Frequency") + 
+    theme_bw()
+#calculate mean number of steps taken each day
+mean (dailySteps$steps)
+#calculate median number of steps taken each day
+median (dailySteps$steps)
+```
 
+### What is the average daily activity pattern?
+```{r average daily activity}
+#plot time series of the average number of steps taken
+timeSteps<- aggregate(steps ~ interval, activity, mean)
+graph <- ggplot(timeSteps, aes(interval, steps))
+graph + geom_line() + labs(title = "Time Series of Average Number of Steps Taken", x = "5 minute Interval", y = "number of steps") + 
+    theme_bw()
+#calculate 5-minute interval, on average across all the days in the dataset, containing the maximum number of steps
+timeSteps$interval[which.max(timeSteps$steps)]
+```
 
-## What is mean total number of steps taken per day?
+### Imputing missing values
+```{r missing values}
+#calculate total number of missing values in the dataset
+sum(is.na(activity$steps))
+# fill in all of the missing values with mean of the interval
+activityCleaned <- activity
+activityCleaned$steps <- ifelse(is.na(activityCleaned$steps), timeSteps$steps[match(activityCleaned$interval, timeSteps$interval)], activityCleaned$steps)
+dailyStepsCleaned <- aggregate(steps ~ date, activityCleaned, sum) 
+#plot histogram of the total number of steps taken each day using imputed table
+graph <- ggplot(dailyStepsCleaned, aes(steps))
+graph + geom_histogram (binwidth = 2000, col = "blue", fill= "light grey") + labs(title = "Histogram of Total Daily Steps", x = "number of steps", y = "Frequency") + 
+    theme_bw()
+#calculate mean number of steps taken each day using imputed table
+mean (dailyStepsCleaned$steps)
+#calculate median number of steps taken each day using imputed table
+median (dailyStepsCleaned$steps)
+```
 
-
-
-## What is the average daily activity pattern?
-
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
+### Are there differences in activity patterns between weekdays and weekends?
+```{r weekdays vs weekends}
+#panel plot time series of the average number of steps taken weekdays vs weekends
+activityCleaned$day <- weekdays(as.Date(activityCleaned$date))
+activityCleaned$daytype<- ifelse(activityCleaned$day == c("Sunday", "Saturday"), "weekend", "weekday")
+timeStepsCleaned<- aggregate(steps ~ interval + daytype, activityCleaned, mean)
+graph <- ggplot(timeStepsCleaned, aes(interval, steps, group=daytype)) + geom_line()
+graph + facet_grid(daytype~.) + labs(title = "Time Series of Average Number of Steps Taken", x = "5 minute Interval", y = "number of steps") + 
+    theme_bw()
+```
