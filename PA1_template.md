@@ -10,6 +10,7 @@
     }
     activity <- read.csv("activity.csv")
     library(ggplot2)
+    echo=TRUE
 
 ### What is the average total number of steps taken per day?
 
