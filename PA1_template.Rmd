@@ -2,7 +2,7 @@
 title: "PA1_template"
 author: "cdwimer"
 date: "12/6/2020"
-output: html_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
